@@ -1,0 +1,19 @@
+{
+  "name": "taf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "taf": "./index.js"
+  },
+  "keywords": [],
+  "author": "gku",
+  "license": "ISC",
+  "dependencies": {
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5"
+  }
+}
