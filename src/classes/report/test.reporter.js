@@ -1,6 +1,4 @@
-const ConsoleReporter = require('./console.reporter')
-
-class Reporter {
+class TestReporter {
 	constructor() {
 		this.reporters = []
 	}
@@ -29,14 +27,14 @@ class Reporter {
 		this.createAttachment(name, JSON.stringify(json, null, '\t'), 'application/json')
 	}
 
-	suiteStarted(name) {
+	/*suiteStarted(name) {
 		this.reporters.forEach(reporter => reporter.suiteStarted(name))
 	}
 
 	suiteDone() {
 		this.reporters.forEach(reporter => reporter.suiteDone())
 	}
-
+*/
 	testStarted(name) {
 		this.reporters.forEach(reporter => reporter.testStarted(name))
 	}
@@ -72,6 +70,14 @@ class Reporter {
 	afterDone(result) {
 		this.reporters.forEach(reporter => reporter.afterDone(result))
 	}
+
+	beforeTest(test) {
+		this.reporters.forEach(reporter => reporter.beforeTest(test))
+	}
+
+	afterTest() {
+		this.reporters.forEach(reporter => reporter.afterTest())
+	}
 }
 
-module.exports = Reporter
+module.exports = TestReporter

@@ -5,7 +5,7 @@ const commandLineUsage = require('command-line-usage')
 const Executor = require('./src/classes/executor')
 
 module.exports.ConsoleReporter = require('./src/classes/report/console.reporter')
-module.exports.Reporter = require('./src/classes/report/reporter')
+module.exports.Reporter = require('./src/classes/report/test.reporter')
 module.exports.TestSuite = require('./src/classes/scope/test.suite')
 module.exports.ExitCondition = require('./src/classes/exit/exit.condition')
 module.exports.TestContext = require('./src/classes/context/test.context')

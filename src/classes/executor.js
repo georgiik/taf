@@ -14,13 +14,17 @@ class Executor {
 	}
 	configure(config) {
 		const Repository = this.getClass('Repository')
+		const SuiteReporter = this.getClass('SuiteReporter')
 		this.repository = new Repository(config.tests)
+		this.suiteReporter = new SuiteReporter()
+
 		config.onConfigure && config.onConfigure()
+
 		return this
 	}
 	async execute(TestSuite, SuiteContext) {
 		const testSuite = new TestSuite(this.repository)
-		const suiteContext = new SuiteContext()
+		const suiteContext = new SuiteContext(this.suiteReporter)
 		return this.executeInstances(testSuite, suiteContext)
 	}
 	async executeInstances(testSuite, suiteContext) {
