@@ -56,6 +56,22 @@ class Reporter {
 	async attachScreenshot(png, name = 'screenshot') {
 		this.allure.addAttachment(name, new Buffer(png, 'base64'), 'image/png')
 	}
+
+	beforeStarted() {
+		this.reporters.forEach(reporter => reporter.beforeStarted())
+	}
+
+	beforeDone(result) {
+		this.reporters.forEach(reporter => reporter.beforeDone(result))
+	}
+
+	afterStarted() {
+		this.reporters.forEach(reporter => reporter.afterStarted())
+	}
+
+	afterDone(result) {
+		this.reporters.forEach(reporter => reporter.afterDone(result))
+	}
 }
 
 module.exports = Reporter

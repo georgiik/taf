@@ -15,8 +15,16 @@ class Wrapper extends Injector {
 			apply(target, thisArg, args) {
 				const execute = async () => {
 					methodWrapper.before(method, args)
-					const result = await Reflect.apply(target, thisArg, args)
+					let result
+					try {
+						result = await Reflect.apply(target, thisArg, args)
+					} catch (e) {
+						result = e
+					}
 					methodWrapper.after(result)
+					if (result instanceof Error) {
+						throw result
+					}
 					return result
 				}
 				return execute()

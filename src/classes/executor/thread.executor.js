@@ -8,7 +8,7 @@ class ThreadExecutor {
 		return new TestExecutor(this.threadID)
 	}
 	async execute(threadTests, threadContext, exitCondition) {
-		while (exitCondition.continue()) {
+		while (exitCondition.continue() && threadTests.length) {
 			const test = threadTests.shift()
 			const testContext = threadContext.testContext
 			await this.testExecutor.execute(test, testContext, exitCondition)
