@@ -16,8 +16,8 @@ class Repository extends Loader {
 		this.classIndex.forEach(TestClass => {
 			const testInstance = new TestClass()
 			testMethods(testInstance).forEach(tName => {
-				const testName = tName.substr('test'.length)
-				const properties = {testName}
+				const name = tName.substr('test'.length)
+				const properties = {testName: name}
 				const testBody = testInstance[tName](properties)
 				const testExecution = new TestExecution(properties)
 				testExecution.beforeEachTest(testInstance.beforeEach)

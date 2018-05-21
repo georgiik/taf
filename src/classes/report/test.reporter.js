@@ -19,28 +19,12 @@ class TestReporter {
 		this.addLabel('story', story)
 	}
 
-	createAttachment(name, content, type) {
-		this.allure.addAttachment(name, content, type)
+	testStarted(test) {
+		this.reporters.forEach(reporter => reporter.testStarted(test))
 	}
 
-	attachJSON(name, json) {
-		this.createAttachment(name, JSON.stringify(json, null, '\t'), 'application/json')
-	}
-
-	/*suiteStarted(name) {
-		this.reporters.forEach(reporter => reporter.suiteStarted(name))
-	}
-
-	suiteDone() {
-		this.reporters.forEach(reporter => reporter.suiteDone())
-	}
-*/
-	testStarted(name) {
-		this.reporters.forEach(reporter => reporter.testStarted(name))
-	}
-
-	testDone(spec) {
-		this.reporters.forEach(reporter => reporter.testDone(spec))
+	testDone(result) {
+		this.reporters.forEach(reporter => reporter.testDone(result))
 	}
 
 	stepStarted(name, start = Date.now()) {
@@ -49,10 +33,6 @@ class TestReporter {
 
 	stepDone(status, end = Date.now()) {
 		this.reporters.forEach(reporter => reporter.stepDone && reporter.stepDone(status, end))
-	}
-
-	async attachScreenshot(png, name = 'screenshot') {
-		this.allure.addAttachment(name, new Buffer(png, 'base64'), 'image/png')
 	}
 
 	beforeStarted() {
@@ -78,6 +58,20 @@ class TestReporter {
 	afterTest() {
 		this.reporters.forEach(reporter => reporter.afterTest())
 	}
+
+	/*createAttachment(name, content, type) {
+		this.allure.addAttachment(name, content, type)
+	}
+
+	attachJSON(name, json) {
+		this.createAttachment(name, JSON.stringify(json, null, '\t'), 'application/json')
+	}
+
+
+	async attachScreenshot(png, name = 'screenshot') {
+		this.allure.addAttachment(name, new Buffer(png, 'base64'), 'image/png')
+	}*/
+
 }
 
 module.exports = TestReporter
