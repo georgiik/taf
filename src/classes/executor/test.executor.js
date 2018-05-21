@@ -1,4 +1,3 @@
-const isError = r => r instanceof Error
 const isAssertionError = r => (r instanceof Error) && (r.name.includes('AssertionError'))
 
 const safe = tc => async fn => {
@@ -8,7 +7,6 @@ const safe = tc => async fn => {
 		status = 'passed'
 	} catch (e) {
 		result = e
-		console.log(e)
 		if (isAssertionError(result)) {
 			status = 'failed'
 		} else {
