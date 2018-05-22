@@ -20,20 +20,20 @@ class TestExecutor {
 	constructor(threadID) {
 		this.threadID = threadID
 	}
-	async execute(test, testContext, exitCondition) {
+	async execute(test, testContext) {
 		const { reporter } = testContext
 		const safeExe = safe(testContext)
 
 		reporter.beforeTest(test)
-		reporter.beforeStarted()
+		reporter.beforeStarted('beforeEach')
 		let result = await safeExe(test.beforeEach)
 		reporter.beforeDone(result)
 
 		if (result.status !== 'passed') {
-			reporter.afterStarted()
+			reporter.afterStarted('afterEach')
 			reporter.afterDone(await safeExe(test.afterEach))
 		} else {
-			reporter.testStarted(test.testName)
+			reporter.testStarted(test)
 			reporter.addLabel('thread', this.threadID)
 			test.feature && reporter.addLabel('feature', test.feature)
 			test.story && reporter.addLabel('story', test.story)
@@ -41,13 +41,13 @@ class TestExecutor {
 			result = await safeExe(test.testBody)
 			reporter.testDone(result)
 
-			reporter.afterStarted()
+			reporter.afterStarted('afterEach')
 			reporter.afterDone(await safeExe(test.afterEach))
 		}
 
-		reporter.afterTest()
+		reporter.afterTest(test, result)
 
-		exitCondition.submitResult(test, result)
+		return result
 	}
 }
 

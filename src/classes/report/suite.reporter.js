@@ -1,8 +1,10 @@
 const TestReporter = require('./test.reporter')
+const SuiteConsoleReporter = require('./suite.console.reporter')
 
 class SuiteReporter {
 	constructor() {
 		this.reporters = []
+		this.addReporter(new SuiteConsoleReporter())
 	}
 	addReporter(reporter) {
 		this.reporters.push(reporter)
@@ -11,8 +13,8 @@ class SuiteReporter {
 		this.reporters.forEach(reporter => reporter.suiteStarted(name))
 	}
 
-	suiteDone() {
-		this.reporters.forEach(reporter => reporter.suiteDone())
+	suiteDone(suiteResults) {
+		this.reporters.forEach(reporter => reporter.suiteDone(suiteResults))
 	}
 
 	get testReporter() {

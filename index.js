@@ -4,7 +4,7 @@ const commandLineArgs = require('command-line-args')
 const commandLineUsage = require('command-line-usage')
 const Executor = require('./src/classes/executor')
 
-module.exports.ConsoleReporter = require('./src/classes/report/console.reporter')
+module.exports.SuiteConsoleReporter = require('./src/classes/report/suite.console.reporter')
 module.exports.Reporter = require('./src/classes/report/test.reporter')
 module.exports.TestSuite = require('./src/classes/scope/test.suite')
 module.exports.ExitCondition = require('./src/classes/exit/exit.condition')
@@ -44,9 +44,9 @@ const usage = commandLineUsage([
 	{
 		header: 'Example:',
 		content:
-		'pure --config <configFile>\n'+
-		'pure --tests <testsFolder> --suite <suiteFile> --context <contextFile>\n' +
-		'pure --config <configFile> --suite <suiteFile>'
+		'taf --config <configFile>\n'+
+		'taf --tests <testsFolder> --suite <suiteFile> --context <contextFile>\n' +
+		'taf --config <configFile> --suite <suiteFile>'
 	}
 ])
 const options = commandLineArgs(optionDefinitions)
@@ -58,13 +58,16 @@ if (options.config) {
 	config.suite = require(path.resolve(loadedConfig.suite))
 	config.context = require(path.resolve(loadedConfig.context))
 }
+if (options.tests) {
+	config.tests = path.resolve(options.tests)
+}
 if (options.suite) {
 	config.suite = require(path.resolve(options.suite))
 }
 if (options.context) {
 	config.context = require(path.resolve(options.context))
 }
-if (config.tests && config.suite && config.context) {
+if (config.tests) {
 	new Executor()
 		.configure(config)
 		.execute(config.suite, config.context)

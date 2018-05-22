@@ -3,9 +3,10 @@ class ExitCondition {
 		this.tests = tests
 	}
 	continue() {
-		return this.tests.length > 0
+		return true
 	}
 	submitResult(test, result) {
+
 	}
 }
 

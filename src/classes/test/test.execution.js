@@ -1,19 +1,18 @@
 const emptyFn = () => {}
 
 class TestExecution {
-	constructor(props) {
+	constructor(props, testInstance) {
+		this.testInstance = testInstance
 		Object.assign(this, props)
-		this.before = this.before || emptyFn
-		this.after = this.after || emptyFn
 	}
 	beforeEachTest(fn = emptyFn) {
-		this.beforeEach = fn
+		this.beforeEach = (...args) => fn.apply(this.testInstance, args)
 	}
 	test(fn) {
-		this.testBody = fn
+		this.testBody = (...args) => fn.apply(this.testInstance, args)
 	}
 	afterEachTest(fn = emptyFn) {
-		this.afterEach = fn
+		this.afterEach = (...args) => fn.apply(this.testInstance, args)
 	}
 }
 

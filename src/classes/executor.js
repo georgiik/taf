@@ -18,11 +18,11 @@ class Executor {
 		this.repository = new Repository(config.tests)
 		this.suiteReporter = new SuiteReporter()
 
-		config.onConfigure && config.onConfigure()
+		config.onConfigure && config.onConfigure(this)
 
 		return this
 	}
-	async execute(TestSuite, SuiteContext) {
+	async execute(TestSuite = this.getClass('TestSuite'), SuiteContext = this.getClass('SuiteContext')) {
 		const testSuite = new TestSuite(this.repository)
 		const suiteContext = new SuiteContext(this.suiteReporter)
 		return this.executeInstances(testSuite, suiteContext)

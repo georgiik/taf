@@ -35,16 +35,16 @@ class TestReporter {
 		this.reporters.forEach(reporter => reporter.stepDone && reporter.stepDone(status, end))
 	}
 
-	beforeStarted() {
-		this.reporters.forEach(reporter => reporter.beforeStarted())
+	beforeStarted(name) {
+		this.reporters.forEach(reporter => reporter.beforeStarted(name))
 	}
 
 	beforeDone(result) {
 		this.reporters.forEach(reporter => reporter.beforeDone(result))
 	}
 
-	afterStarted() {
-		this.reporters.forEach(reporter => reporter.afterStarted())
+	afterStarted(name) {
+		this.reporters.forEach(reporter => reporter.afterStarted(name))
 	}
 
 	afterDone(result) {
@@ -55,8 +55,8 @@ class TestReporter {
 		this.reporters.forEach(reporter => reporter.beforeTest(test))
 	}
 
-	afterTest() {
-		this.reporters.forEach(reporter => reporter.afterTest())
+	afterTest(test, result) {
+		this.reporters.forEach(reporter => reporter.afterTest(test, result))
 	}
 
 	/*createAttachment(name, content, type) {
