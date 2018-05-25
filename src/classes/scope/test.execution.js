@@ -2,8 +2,8 @@ const emptyFn = () => {}
 
 class TestExecution {
 	constructor(props, testInstance) {
-		this.testInstance = testInstance
-		Object.assign(this, props)
+		this.testInstance = testInstance || null
+		props && Object.assign(this, props)
 	}
 	beforeEachTest(fn = emptyFn) {
 		this.beforeEach = (...args) => fn.apply(this.testInstance, args)

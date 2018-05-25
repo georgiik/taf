@@ -1,15 +1,23 @@
+const SuiteContext = require('../context/suite.context')
 const ExitCondition = require('../exit/exit.condition')
 
 class TestSuite {
-	constructor(repository, name = 'TestSuite') {
+	constructor(name = 'TestSuite') {
 		this.name = name
 		this.threadCount = 1
-		this.repository = repository
-		this.tests = this.query(this.repository.tests)
-		this.exitCondition = new ExitCondition(this.tests)
+		this.suiteContext = new SuiteContext()
+		this._tests = []
+		this.exitCondition = new ExitCondition(this._tests)
+	}
+	set tests(value) {
+		this._tests = value
+		this.exitCondition.tests = value
+	}
+	get tests() {
+		return this._tests
 	}
 	query(tests) {
-		return tests
+		this.tests = tests
 	}
 	get threadTests() {
 		return this.tests

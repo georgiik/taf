@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "taf": "./index.js"
+    "taf": "./src/cli.js"
   },
   "keywords": [],
   "author": "gku",

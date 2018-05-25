@@ -4,33 +4,26 @@ class Executor {
 	constructor() {
 		this.loader = new Loader()
 		this.loader.loadDir(__dirname)
+		const TestRepository = this.getClass('TestRepository')
+		this.repository = new TestRepository()
 	}
 	getClass(clsName) {
 		return this.loader.getClass(clsName)
 	}
-	load(loadFn) {
-		loadFn(this.loader)
-		return this
-	}
 	configure(config) {
-		const Repository = this.getClass('Repository')
-		const SuiteReporter = this.getClass('SuiteReporter')
-		this.repository = new Repository(config.tests)
-		this.suiteReporter = new SuiteReporter()
-
+		this.repository.loadTests(config.tests)
 		config.onConfigure && config.onConfigure(this)
-
 		return this
 	}
-	async execute(TestSuite = this.getClass('TestSuite'), SuiteContext = this.getClass('SuiteContext')) {
-		const testSuite = new TestSuite(this.repository)
-		const suiteContext = new SuiteContext(this.suiteReporter)
-		return this.executeInstances(testSuite, suiteContext)
+	async execute(TestSuite = this.getClass('TestSuite')) {
+		const testSuite = new TestSuite()
+		testSuite.query(this.repository.tests)
+		return this.executeInstances(testSuite)
 	}
-	async executeInstances(testSuite, suiteContext) {
+	async executeInstances(testSuite) {
 		const SuiteExecutor = this.getClass('SuiteExecutor')
-		const suiteExecutor = new SuiteExecutor()
-		return suiteExecutor.execute(testSuite, suiteContext)
+		const suiteExecutor = new SuiteExecutor(testSuite)
+		return suiteExecutor.execute()
 	}
 }
 
