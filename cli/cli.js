@@ -2,7 +2,7 @@
 const path = require('path')
 const commandLineArgs = require('command-line-args')
 const commandLineUsage = require('command-line-usage')
-const Executor = require('./classes/executor')
+const Executor = require('../src/classes/executor')
 
 const optionDefinitions = [
 	{

@@ -1,5 +1,8 @@
 const Loader = require('../di/loader')
 
+/**
+ * Class implementing main executor for Test Runner
+ * */
 class Executor {
 	constructor() {
 		this.loader = new Loader()
@@ -15,15 +18,25 @@ class Executor {
 		config.onConfigure && config.onConfigure(this)
 		return this
 	}
+	/**
+	 * Executing a test suite
+	 * @param TestSuite {TestSuite.class} [TestSuite=TestSuite.class] - Test Suite to execute, default is TestSuite.class
+	 * @return {Promise<Map<{Test}, {TestResult}>>}
+	 * */
 	async execute(TestSuite = this.getClass('TestSuite')) {
 		const testSuite = new TestSuite()
 		testSuite.query(this.repository.tests)
-		return this.executeInstances(testSuite)
+		return this.executeInstance(testSuite)
 	}
-	async executeInstances(testSuite) {
+	/**
+	 * Executing a test suite
+	 * @param {TestSuite.instance}
+	 * @return {Promise<Map<{Test}, {TestResult}>>}
+	 * */
+	async executeInstance(testSuite) {
 		const SuiteExecutor = this.getClass('SuiteExecutor')
-		const suiteExecutor = new SuiteExecutor(testSuite)
-		return suiteExecutor.execute()
+		const suiteExecutor = new SuiteExecutor()
+		return suiteExecutor.execute(testSuite)
 	}
 }
 

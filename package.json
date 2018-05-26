@@ -2,18 +2,21 @@
   "name": "taf",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "taf": "./src/cli.js"
+    "taf": "./cli/cli.js"
   },
   "keywords": [],
   "author": "gku",
   "license": "ISC",
   "dependencies": {
+    "allure2-js-commons": "^1.0.6",
     "command-line-args": "^5.0.2",
-    "command-line-usage": "^5.0.5"
+    "command-line-usage": "^5.0.5",
+    "jsdoc-to-markdown": "^4.0.1",
+    "jsdox": "^0.4.10"
   }
 }

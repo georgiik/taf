@@ -2,8 +2,8 @@ const SuiteContext = require('../context/suite.context')
 const ExitCondition = require('../exit/exit.condition')
 
 class TestSuite {
-	constructor(name = 'TestSuite') {
-		this.name = name
+	constructor(name) {
+		this.name = name || this.constructor.name
 		this.threadCount = 1
 		this.suiteContext = new SuiteContext()
 		this._tests = []

@@ -17,11 +17,12 @@ class TestRepository extends Loader {
 			testMethods(testInstance).forEach(testMethod => {
 				const name = testMethod.substr('test'.length)
 				const properties = {name}
-				const testBody = testInstance[testMethod](properties)
-				const testExecution = new TestExecution(properties, testInstance)
-				testExecution.beforeEachTest(testInstance.beforeEach)
+				const instance = new TestClass()
+				const testBody = instance[testMethod](properties)
+				const testExecution = new TestExecution(properties, instance)
+				testExecution.beforeEachTest(instance.beforeEach)
 				testExecution.test(testBody)
-				testExecution.afterEachTest(testInstance.afterEach)
+				testExecution.afterEachTest(instance.afterEach)
 				this.tests.push(testExecution)
 			})
 		})

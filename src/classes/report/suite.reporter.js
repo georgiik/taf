@@ -4,7 +4,6 @@ const SuiteConsoleReporter = require('./suite.console.reporter')
 class SuiteReporter {
 	constructor() {
 		this.reporters = []
-		this.addReporter(new SuiteConsoleReporter())
 	}
 	addReporter(reporter) {
 		this.reporters.push(reporter)

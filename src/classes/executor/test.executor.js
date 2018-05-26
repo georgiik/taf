@@ -16,11 +16,14 @@ const safe = tc => async fn => {
 	return { status, result }
 }
 
+/** Class implementing Test executor*/
 class TestExecutor {
-	constructor(threadID) {
-		this.threadID = threadID
-	}
-	async execute(test, testContext) {
+	/** Executing Test in TestContext.
+	 * @param test {TestExecution}
+	 * @param testContext {TestContext}
+	 * @param threadID {int}
+	 * @returns testResult {TestResult} */
+	async execute(test, testContext, threadID) {
 		const { reporter } = testContext
 		const safeExe = safe(testContext)
 
@@ -34,7 +37,7 @@ class TestExecutor {
 			reporter.afterDone(await safeExe(test.afterEach))
 		} else {
 			reporter.testStarted(test)
-			reporter.addLabel('thread', this.threadID)
+			reporter.addLabel('thread', threadID)
 			test.feature && reporter.addLabel('feature', test.feature)
 			test.story && reporter.addLabel('story', test.story)
 			test.tags && test.tags.forEach(tag => reporter.addLabel('tag', tag))
