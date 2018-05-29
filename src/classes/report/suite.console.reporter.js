@@ -1,5 +1,8 @@
 const TestConsoleReporter = require('./test.console.reporter')
 
+/** Class implementing Suite Console reporter
+ * @memberOf Reporter
+ * */
 class SuiteConsoleReporter {
 	constructor(long) {
 		this.logger = console
@@ -12,9 +15,6 @@ class SuiteConsoleReporter {
 
 	suiteDone(suiteResults) {
 		const summary = this._processResults(suiteResults)
-		if (this.long) {
-			this.logger.log()
-		}
 		this.logger.log(`Suite done:`)
 		this.logger.log(`   passed: ${summary.passed}`)
 		this.logger.log(`   failed: ${summary.failed}`)

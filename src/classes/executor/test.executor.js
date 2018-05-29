@@ -16,7 +16,9 @@ const safe = tc => async fn => {
 	return { status, result }
 }
 
-/** Class implementing Test executor*/
+/** Class implementing Test executor
+ * @memberOf Executors
+ * */
 class TestExecutor {
 	/** Executing Test in TestContext.
 	 * @param test {TestExecution}
@@ -27,28 +29,28 @@ class TestExecutor {
 		const { reporter } = testContext
 		const safeExe = safe(testContext)
 
-		reporter.beforeTest(test)
-		reporter.beforeStarted('beforeEach')
+		reporter.testStarted(test)
+		reporter.beforeEachStarted('beforeEach')
 		let result = await safeExe(test.beforeEach)
-		reporter.beforeDone(result)
+		reporter.beforeEachDone(result)
 
 		if (result.status !== 'passed') {
-			reporter.afterStarted('afterEach')
-			reporter.afterDone(await safeExe(test.afterEach))
+			reporter.afterEachStarted('afterEach')
+			reporter.afterEachDone(await safeExe(test.afterEach))
 		} else {
-			reporter.testStarted(test)
+			reporter.testBodyStarted(test)
 			reporter.addLabel('thread', threadID)
 			test.feature && reporter.addLabel('feature', test.feature)
 			test.story && reporter.addLabel('story', test.story)
 			test.tags && test.tags.forEach(tag => reporter.addLabel('tag', tag))
 			result = await safeExe(test.testBody)
-			reporter.testDone(result)
+			reporter.testBodyDone(result)
 
-			reporter.afterStarted('afterEach')
-			reporter.afterDone(await safeExe(test.afterEach))
+			reporter.afterEachStarted('afterEach')
+			reporter.afterEachDone(await safeExe(test.afterEach))
 		}
 
-		reporter.afterTest(test, result)
+		reporter.testDone(test, result)
 
 		return result
 	}

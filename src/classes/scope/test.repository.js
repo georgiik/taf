@@ -5,6 +5,11 @@ const isTestMethod = obj => k => k.startsWith('test') && (typeof obj[k] == 'func
 const objMethods = obj => Object.getOwnPropertyNames(Object.getPrototypeOf(obj))
 const testMethods = obj => objMethods(obj).filter(isTestMethod(obj))
 
+/** @namespace Scope */
+
+/** Class implementing Test repository
+ * @memberOf Scope
+ * */
 class TestRepository extends Loader {
 	constructor() {
 		super()

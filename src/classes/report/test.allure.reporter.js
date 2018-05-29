@@ -1,5 +1,7 @@
 const { Stage, Status } = require('allure2-js-commons')
-
+/** Class implementing Test Allure reporter
+ * @memberOf Reporter
+ * */
 class TestAllureReporter {
 	constructor(group) {
 		this.group = group
@@ -10,46 +12,46 @@ class TestAllureReporter {
 		return this.steps[this.steps.length - 1]
 	}
 
-	beforeTest(test) {
-		this.group = this.group.startGroup(test.name)
-	}
-
-	afterTest() {
-		this.group.endGroup()
-	}
-
 	addLabel(name, value) {
 		this.test.addLabel(name, value)
 	}
 
-	beforeStarted(name) {
-		this.before = this.group.addBefore()
-		this.steps.push(this.before.startStep(name))
-	}
-
-	beforeDone(result) {
-		this.stepDone(result)
-	}
-
-	afterStarted(name) {
-		this.after = this.group.addAfter()
-		this.steps.push(this.after.startStep(name))
-	}
-
-	afterDone(result) {
-		this.stepDone(result)
-	}
-
 	testStarted(test) {
+		this.group = this.group.startGroup(test.name)
+	}
+
+	testDone() {
+		this.group.endGroup()
+	}
+
+	testBodyStarted(test) {
 		this.group.name = test.name
 		this.test = this.group.startTest(test.name)
 		this.test.stage = Stage.RUNNING
 		this.steps.push(this.test)
 	}
 
-	testDone(result) {
+	testBodyDone(result) {
 		this._setResult(this.test, result)
 		this.test.endTest()
+	}
+
+	beforeEachStarted(name) {
+		this.before = this.group.addBefore()
+		this.steps.push(this.before.startStep(name))
+	}
+
+	beforeEachDone(result) {
+		this.stepDone(result)
+	}
+
+	afterEachStarted(name) {
+		this.after = this.group.addAfter()
+		this.steps.push(this.after.startStep(name))
+	}
+
+	afterEachDone(result) {
+		this.stepDone(result)
 	}
 
 	stepStarted(name) {

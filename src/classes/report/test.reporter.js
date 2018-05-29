@@ -1,3 +1,8 @@
+/** @namespace Reporter */
+
+/** Class implementing Test reporter
+ * @memberOf Reporter
+ * */
 class TestReporter {
 	constructor() {
 		this.reporters = []
@@ -23,8 +28,32 @@ class TestReporter {
 		this.reporters.forEach(reporter => reporter.testStarted(test))
 	}
 
-	testDone(result) {
-		this.reporters.forEach(reporter => reporter.testDone(result))
+	testDone(test, result) {
+		this.reporters.forEach(reporter => reporter.testDone(test, result))
+	}
+
+	testBodyStarted(test) {
+		this.reporters.forEach(reporter => reporter.testBodyStarted(test))
+	}
+
+	testBodyDone(result) {
+		this.reporters.forEach(reporter => reporter.testBodyDone(result))
+	}
+
+	beforeEachStarted(name) {
+		this.reporters.forEach(reporter => reporter.beforeEachStarted(name))
+	}
+
+	beforeEachDone(result) {
+		this.reporters.forEach(reporter => reporter.beforeEachDone(result))
+	}
+
+	afterEachStarted(name) {
+		this.reporters.forEach(reporter => reporter.afterEachStarted(name))
+	}
+
+	afterEachDone(result) {
+		this.reporters.forEach(reporter => reporter.afterEachDone(result))
 	}
 
 	stepStarted(name, start = Date.now()) {
@@ -34,44 +63,6 @@ class TestReporter {
 	stepDone(status, end = Date.now()) {
 		this.reporters.forEach(reporter => reporter.stepDone && reporter.stepDone(status, end))
 	}
-
-	beforeStarted(name) {
-		this.reporters.forEach(reporter => reporter.beforeStarted(name))
-	}
-
-	beforeDone(result) {
-		this.reporters.forEach(reporter => reporter.beforeDone(result))
-	}
-
-	afterStarted(name) {
-		this.reporters.forEach(reporter => reporter.afterStarted(name))
-	}
-
-	afterDone(result) {
-		this.reporters.forEach(reporter => reporter.afterDone(result))
-	}
-
-	beforeTest(test) {
-		this.reporters.forEach(reporter => reporter.beforeTest(test))
-	}
-
-	afterTest(test, result) {
-		this.reporters.forEach(reporter => reporter.afterTest(test, result))
-	}
-
-	/*createAttachment(name, content, type) {
-		this.allure.addAttachment(name, content, type)
-	}
-
-	attachJSON(name, json) {
-		this.createAttachment(name, JSON.stringify(json, null, '\t'), 'application/json')
-	}
-
-
-	async attachScreenshot(png, name = 'screenshot') {
-		this.allure.addAttachment(name, new Buffer(png, 'base64'), 'image/png')
-	}*/
-
 }
 
 module.exports = TestReporter

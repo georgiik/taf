@@ -1,6 +1,9 @@
 const TestReporter = require('./test.reporter')
 const SuiteConsoleReporter = require('./suite.console.reporter')
 
+/** Class implementing Suite reporter
+ * @memberOf Reporter
+ * */
 class SuiteReporter {
 	constructor() {
 		this.reporters = []

@@ -1,4 +1,4 @@
-### Example of tests with properties
+### Example of tests with context
 This example shows how to create Web-UI tests with SuiteContext and TestContext.
 Also this example shows usage of ConsoleReporter and AllureReporter
 #### Install dependencies

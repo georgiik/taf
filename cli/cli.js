@@ -2,7 +2,7 @@
 const path = require('path')
 const commandLineArgs = require('command-line-args')
 const commandLineUsage = require('command-line-usage')
-const Executor = require('../src/classes/executor')
+const MainExecutor = require('../src/classes/main.executor')
 
 const optionDefinitions = [
 	{
@@ -23,6 +23,10 @@ const optionDefinitions = [
 ]
 
 const usage = commandLineUsage([
+	{
+		header: 'TAF',
+		content: 'Test Runner'
+	},
 	{
 		header: 'Options',
 		optionList: optionDefinitions
@@ -63,7 +67,7 @@ if (options.suite) {
 }
 
 if (config.tests) {
-	new Executor()
+	new MainExecutor()
 		.configure(config)
 		.execute(config.suite, config.context)
 		.then(r => console.log('DONE'))

@@ -1,8 +1,11 @@
 const emptyFn = () => {}
 
+/** Class implementing Test execution
+ * @memberOf Scope
+ * */
 class TestExecution {
-	constructor(props, testInstance) {
-		this.testInstance = testInstance || null
+	constructor(props, testInstance = null) {
+		this.testInstance = testInstance
 		props && Object.assign(this, props)
 	}
 	beforeEachTest(fn = emptyFn) {

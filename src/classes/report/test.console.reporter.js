@@ -1,5 +1,8 @@
 const Logger = require('../log/logger')
 
+/** Class implementing Test Console reporter
+ * @memberOf Reporter
+ * */
 class TestConsoleReporter {
 	constructor(long) {
 		this.logger = new Logger()
@@ -8,30 +11,59 @@ class TestConsoleReporter {
 		this.step = 3
 	}
 
-	beforeTest(test) {
+	addLabel(name, value) {}
+
+	feature(feature) {}
+
+	story(story) {}
+
+	testStarted(test) {
 		this.indent += this.step
 		if (this.long) {
-			this.logger.log()
 			this.testRow = `${' '.repeat(this.indent)}Test: ${test.name}`
 			this.logger.log(this.testRow)
 		}
 	}
 
-	afterTest(test, result) {
-		this.logger.log(`${' '.repeat(this.indent)}Test done: ${test.name}: ${result.status}`)
+	testDone(test, result) {
+		this.logger.log(`${' '.repeat(this.indent)}Test: ${test.name}: ${result.status}`)
 		this.indent -= this.step
 		this.logger.print()
 	}
 
-	testStarted(test) {
+	testBodyStarted(test) {
 		this.indent += this.step
 		if (this.long) {
-			this.testRow = `${' '.repeat(this.indent)}test`
+			this.testRow = `${' '.repeat(this.indent)}testBody`
 			this.logger.log(this.testRow)
 		}
 	}
 
-	testDone(result) {
+	testBodyDone(result) {
+		this._reportError(result)
+		this.indent -= this.step
+	}
+
+	beforeEachStarted(name) {
+		this.indent += this.step
+		if (this.long) {
+			this.logger.log(`${' '.repeat(this.indent)}${name}`)
+		}
+	}
+
+	beforeEachDone(result) {
+		this._reportError(result)
+		this.indent -= this.step
+	}
+
+	afterEachStarted(name) {
+		this.indent += this.step
+		if (this.long) {
+			this.logger.log(`${' '.repeat(this.indent)}${name}`)
+		}
+	}
+
+	afterEachDone(result) {
 		this._reportError(result)
 		this.indent -= this.step
 	}
@@ -44,39 +76,6 @@ class TestConsoleReporter {
 	}
 
 	stepDone(status) {
-		this.indent -= this.step
-	}
-
-	addLabel(name, value) {
-	}
-
-	feature(feature) {
-	}
-
-	story(story) {
-	}
-
-	beforeStarted(name) {
-		this.indent += this.step
-		if (this.long) {
-			this.logger.log(`${' '.repeat(this.indent)}${name}`)
-		}
-	}
-
-	beforeDone(result) {
-		this._reportError(result)
-		this.indent -= this.step
-	}
-
-	afterStarted(name) {
-		this.indent += this.step
-		if (this.long) {
-			this.logger.log(`${' '.repeat(this.indent)}${name}`)
-		}
-	}
-
-	afterDone(result) {
-		this._reportError(result)
 		this.indent -= this.step
 	}
 

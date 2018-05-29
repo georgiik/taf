@@ -1,6 +1,5 @@
+const { SuiteContext, SuiteConsoleReporter, SuiteAllureReporter } = require('taf')
 const UiTestContext = require('./ui.test.context')
-const { SuiteContext } = require('taf')
-const { SuiteConsoleReporter, SuiteAllureReporter } = require('taf')
 
 class UiSuiteContext extends SuiteContext {
 	constructor() {

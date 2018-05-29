@@ -1,6 +1,9 @@
 const SuiteContext = require('../context/suite.context')
 const ExitCondition = require('../exit/exit.condition')
 
+/** Class implementing Test suite
+ * @memberOf Scope
+ * */
 class TestSuite {
 	constructor(name) {
 		this.name = name || this.constructor.name

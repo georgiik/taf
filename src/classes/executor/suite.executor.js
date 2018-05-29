@@ -3,6 +3,7 @@ const SuiteConsoleReporter = require('../report/suite.console.reporter')
 
 /**
  * Class implementing Suite executor
+ * @memberOf Executors
  * */
 class SuiteExecutor {
 	/** Executing tests in async thread. Test execution is done until there are tests or Exit Condition fulfilled
@@ -10,14 +11,14 @@ class SuiteExecutor {
 	 * @param threadTests {TestExecution[]}
 	 * @param suiteContext {SuiteContext}
 	 * @param exitCondition {ExitCondition}
-	 * @return threadResults {Promise<Map<{Test}, {TestResult}>>}
+	 * @return {Promise<Map<{Test}, {TestResult}>>}
 	 * */
 	async executeThread(threadID, threadTests, suiteContext, exitCondition) {
 		const threadResults = new Map()
+		const testExecutor = new TestExecutor()
 		while (threadTests.length && exitCondition.continue()) {
 			const test = threadTests.shift()
 			const testContext = suiteContext.testContext
-			const testExecutor = new TestExecutor(threadID)
 			const result = await testExecutor.execute(test, testContext, threadID)
 			exitCondition.submitResult(test, result)
 			threadResults.set(test, result)

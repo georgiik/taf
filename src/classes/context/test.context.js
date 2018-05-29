@@ -3,6 +3,7 @@ const ConsoleReporter = require('../report/test.console.reporter')
 
 /**
  * Class implementing Test Context.
+ * @memberOf Context
  * */
 class TestContext {
 	/** @param reporter {TestReporter}

@@ -1,9 +1,12 @@
 const Loader = require('../di/loader')
 
+/** @namespace Executors */
+
 /**
  * Class implementing main executor for Test Runner
+ * @memberOf Executors
  * */
-class Executor {
+class MainExecutor {
 	constructor() {
 		this.loader = new Loader()
 		this.loader.loadDir(__dirname)
@@ -40,4 +43,4 @@ class Executor {
 	}
 }
 
-module.exports = Executor
+module.exports = MainExecutor

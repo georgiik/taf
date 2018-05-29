@@ -1,7 +1,8 @@
 const { AllureConfig, AllureRuntime } = require('allure2-js-commons')
-
 const TestAllureReporter = require('./test.allure.reporter')
-
+/** Class implementing Suite Allure reporter
+ * @memberOf Reporter
+ * */
 class SuiteAllureReporter {
 	constructor() {
 		const config = new AllureConfig()
