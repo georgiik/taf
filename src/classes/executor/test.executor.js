@@ -20,37 +20,28 @@ const safe = tc => async fn => {
  * @memberOf Executors
  * */
 class TestExecutor {
-	/** Executing Test in TestContext.
-	 * @param test {TestExecution}
-	 * @param testContext {TestContext}
-	 * @param threadID {int}
-	 * @returns testResult {TestResult} */
-	async execute(test, testContext, threadID) {
-		const { reporter } = testContext
+	constructor(threadID) {
+		this.threadID = threadID
+	}
+	async execute(test, testContext, testReporter) {
 		const safeExe = safe(testContext)
 
-		reporter.testStarted(test)
-		reporter.beforeEachStarted('beforeEach')
+		testReporter.testStarted(test)
+		testReporter.beforeEachStarted('beforeEach')
 		let result = await safeExe(test.beforeEach)
-		reporter.beforeEachDone(result)
+		testReporter.beforeEachDone(result)
 
-		if (result.status !== 'passed') {
-			reporter.afterEachStarted('afterEach')
-			reporter.afterEachDone(await safeExe(test.afterEach))
-		} else {
-			reporter.testBodyStarted(test)
-			reporter.addLabel('thread', threadID)
-			test.feature && reporter.addLabel('feature', test.feature)
-			test.story && reporter.addLabel('story', test.story)
-			test.tags && test.tags.forEach(tag => reporter.addLabel('tag', tag))
+		if (result.status === 'passed') {
+			testReporter.testBodyStarted(test)
+			testReporter.addLabel('thread', this.threadID)
 			result = await safeExe(test.testBody)
-			reporter.testBodyDone(result)
-
-			reporter.afterEachStarted('afterEach')
-			reporter.afterEachDone(await safeExe(test.afterEach))
+			testReporter.testBodyDone(result)
 		}
 
-		reporter.testDone(test, result)
+        testReporter.afterEachStarted('afterEach')
+        testReporter.afterEachDone(await safeExe(test.afterEach))
+
+		testReporter.testDone(test, result)
 
 		return result
 	}

@@ -1,6 +1,12 @@
 const TestRepository = require('../scope/test.repository')
 const TestSuite = require('../scope/test.suite')
+const SuiteContext = require('../context/suite.context')
 const SuiteExecutor = require('./suite.executor')
+const ExitCondition = require('../exit/exit.condition')
+const SuiteReporter = require('../report/suite.reporter')
+const SuiteConsoleReporter = require('../report/suite.console.reporter')
+const ContextExtension = require('../context/context.extension')
+const defaultSuiteConfig = require('../config/suite.default.config')
 
 /** @namespace Executors */
 
@@ -11,30 +17,24 @@ const SuiteExecutor = require('./suite.executor')
 class MainExecutor {
 	constructor() {
 		this.repository = new TestRepository()
-        this.suiteExecutor = new SuiteExecutor()
     }
 	configure(config) {
 		this.repository.loadTests(config.tests)
 		config.onConfigure && config.onConfigure(this)
 		return this
 	}
-	/**
-	 * Executing a test suite
-	 * @param {TestSuite.class} TestSuiteClass [TestSuite=TestSuite.class] - Test Suite to execute, default is TestSuite.class
-	 * @return {Promise<Map<{Test}, {TestResult}>>}
-	 * */
-	async execute(TestSuiteClass = TestSuite) {
-		const testSuite = new TestSuiteClass()
-		testSuite.query(this.repository.tests)
-		return this.executeInstance(testSuite)
+	async execute(suiteConfig) {
+		const config = Object.assign({}, defaultSuiteConfig, suiteConfig)
+		const testSuite = new TestSuite(config, this.repository)
+		const contextExt = new ContextExtension()
+		const exitCondition = new ExitCondition()
+		const suiteReporter = new SuiteReporter()
+        suiteReporter.addReporter(new SuiteConsoleReporter())
+        return this.executeInstance(testSuite, contextExt, exitCondition, suiteReporter)
 	}
-	/**
-	 * Executing a test suite
-	 * @param {TestSuite.instance} testSuite
-	 * @return {Promise<Map<{Test}, {TestResult}>>}
-	 * */
-	async executeInstance(testSuite) {
-		return this.suiteExecutor.execute(testSuite)
+	async executeInstance(testSuite, contextExt, exitCondition, suiteReporter) {
+        const suiteExecutor = new SuiteExecutor(contextExt, exitCondition, suiteReporter)
+		return suiteExecutor.execute(testSuite)
 	}
 }
 

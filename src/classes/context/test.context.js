@@ -8,9 +8,9 @@ const ConsoleReporter = require('../report/test.console.reporter')
 class TestContext {
 	/** @param reporter {TestReporter}
 	 */
-	constructor(reporter) {
+	/*constructor(reporter) {
 		this.reporter = reporter
-	}
+	}*/
 }
 
 module.exports = TestContext

@@ -1,52 +1,41 @@
 const TestExecutor = require('./test.executor')
-const SuiteConsoleReporter = require('../report/suite.console.reporter')
-
 /**
  * Class implementing Suite executor
  * @memberOf Executors
  * */
 class SuiteExecutor {
-	/** Executing tests in async thread. Test execution is done until there are tests or Exit Condition fulfilled
-	 * @param threadID {int}
-	 * @param threadTests {TestExecution[]}
-	 * @param suiteContext {SuiteContext}
-	 * @param exitCondition {ExitCondition}
-	 * @return {Promise<Map<{Test}, {TestResult}>>}
-	 * */
-	async executeThread(threadID, threadTests, suiteContext, exitCondition) {
+	constructor(contextExt, exitCondition, suiteReporter) {
+		this.contextExt = contextExt
+		this.exitCondition = exitCondition
+		this.suiteReporter = suiteReporter
+	}
+	async executeThread(threadID, threadTests) {
 		const threadResults = new Map()
-		const testExecutor = new TestExecutor()
-		while (threadTests.length && exitCondition.continue()) {
-			const test = threadTests.shift()
-			const testContext = suiteContext.testContext
-			const result = await testExecutor.execute(test, testContext, threadID)
-			exitCondition.submitResult(test, result)
+        const testExecutor = new TestExecutor(threadID)
+        while (threadTests.length && this.exitCondition.continue()) {
+            const test = threadTests.shift()
+            const testReporter = this.suiteReporter.testReporter
+			const testContext = this.contextExt.extend({testReporter})
+			const result = await testExecutor.execute(test, testContext, testReporter)
+			this.exitCondition.submitResult(test, result)
 			threadResults.set(test, result)
 		}
 		return threadResults
 	}
-	/** Executing Test Suite
-	 * @param {TestSuite.instance}
-	 * @return {Promise<Map<{Test}, {TestResult}>>}
-	 * */
 	async execute(testSuite) {
-		const { threadCount, exitCondition, suiteContext } = testSuite
-		const { suiteReporter } = suiteContext
+		const { threadCount } = testSuite
 		const running = []
 		let suiteResults = new Map()
 		let threadID = 0
-		if (suiteReporter.reporters.length === 0) {
-			suiteReporter.addReporter(new SuiteConsoleReporter())
-		}
-		suiteReporter.suiteStarted(testSuite)
+        this.suiteReporter.suiteStarted(testSuite)
 		while (threadID < threadCount) {
 			const { threadTests } = testSuite
-			const threadDone = this.executeThread(threadID++, threadTests, suiteContext, exitCondition)
+			const threadDone = this.executeThread(threadID++, threadTests)
 			threadDone.then(threadResults => suiteResults = new Map([...suiteResults, ...threadResults]))
 			running.push(threadDone)
 		}
 		await Promise.all(running)
-		suiteReporter.suiteDone(suiteResults)
+        this.suiteReporter.suiteDone(suiteResults)
 		return suiteResults
 	}
 }

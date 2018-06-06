@@ -5,12 +5,11 @@ const ExitCondition = require('../exit/exit.condition')
  * @memberOf Scope
  * */
 class TestSuite {
-	constructor(name) {
-		this.name = name || this.constructor.name
-		this.threadCount = 1
-		this.suiteContext = new SuiteContext()
-		this._tests = []
-		this.exitCondition = new ExitCondition(this._tests)
+	constructor(config, repository) {
+		Object.assign(this, config)
+		this.name = config.name || this.constructor.name
+        this.exitCondition = new ExitCondition(this._tests)
+        this.tests = config.query(repository.tests)
 	}
 	set tests(value) {
 		this._tests = value
@@ -18,9 +17,6 @@ class TestSuite {
 	}
 	get tests() {
 		return this._tests
-	}
-	query(tests) {
-		this.tests = tests
 	}
 	get threadTests() {
 		return this.tests
