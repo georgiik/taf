@@ -4,18 +4,17 @@ const emptyFn = () => {}
  * @memberOf Scope
  * */
 class TestExecution {
-	constructor(props, testInstance = null) {
-		this.testInstance = testInstance
-		props && Object.assign(this, props)
+	constructor(props = {}) {
+		Object.assign(this, props)
 	}
 	beforeEachTest(fn = emptyFn) {
-		this.beforeEach = (...args) => fn.apply(this.testInstance, args)
+		this.beforeEach = (context) => fn(context)
 	}
 	test(fn) {
-		this.testBody = (...args) => fn.apply(this.testInstance, args)
+		this.testBody = (context) => fn(context)
 	}
 	afterEachTest(fn = emptyFn) {
-		this.afterEach = (...args) => fn.apply(this.testInstance, args)
+		this.afterEach = (context) => fn(context)
 	}
 }
 
