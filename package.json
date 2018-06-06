@@ -12,6 +12,7 @@
   "keywords": [],
   "author": "Georgii Kurtanidze",
   "license": "MIT",
+  "repository": "https://github.com/georgiik/taf",
   "dependencies": {
     "allure2-js-commons": "^1.0.6",
     "command-line-args": "^5.0.2",
