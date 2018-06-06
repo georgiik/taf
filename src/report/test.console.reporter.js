@@ -1,4 +1,4 @@
-const Logger = require('../log/logger')
+const Logger = require('../logger')
 
 /** Class implementing Test Console reporter
  * @memberOf Reporter

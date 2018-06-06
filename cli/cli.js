@@ -2,7 +2,7 @@
 const path = require('path')
 const commandLineArgs = require('command-line-args')
 const commandLineUsage = require('command-line-usage')
-const MainExecutor = require('../src/classes/executor/main.executor')
+const MainExecutor = require('../src/executor/main.executor')
 
 const optionDefinitions = [
 	{
@@ -19,7 +19,12 @@ const optionDefinitions = [
 		name: 'suite',
 		type: String,
 		description: 'Test Suite',
-		typeLabel: '<file>' }
+		typeLabel: '<file>' },
+    {
+        name: 'context',
+        type: String,
+        description: 'Test Context',
+        typeLabel: '<file>' }
 ]
 
 const usage = commandLineUsage([
@@ -64,6 +69,10 @@ if (options.tests) {
 
 if (options.suite) {
 	config.suite = require(path.resolve(options.suite))
+}
+
+if (options.context) {
+    config.context = require(path.resolve(options.context))
 }
 
 if (config.tests) {

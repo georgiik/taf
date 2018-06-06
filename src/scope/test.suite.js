@@ -1,5 +1,4 @@
-const SuiteContext = require('../context/suite.context')
-const ExitCondition = require('../exit/exit.condition')
+const ExitCondition = require('../exit.condition')
 
 /** Class implementing Test suite
  * @memberOf Scope

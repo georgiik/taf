@@ -5,7 +5,7 @@ const TestExecutor = require('./test.executor')
  * */
 class SuiteExecutor {
 	constructor(contextExt, exitCondition, suiteReporter) {
-		this.contextExt = contextExt
+		this.testContext = contextExt
 		this.exitCondition = exitCondition
 		this.suiteReporter = suiteReporter
 	}
@@ -15,7 +15,7 @@ class SuiteExecutor {
         while (threadTests.length && this.exitCondition.continue()) {
             const test = threadTests.shift()
             const testReporter = this.suiteReporter.testReporter
-			const testContext = this.contextExt.extend({testReporter})
+			const testContext = this.testContext.getContext({testReporter})
 			const result = await testExecutor.execute(test, testContext, testReporter)
 			this.exitCondition.submitResult(test, result)
 			threadResults.set(test, result)
@@ -23,12 +23,11 @@ class SuiteExecutor {
 		return threadResults
 	}
 	async execute(testSuite) {
-		const { threadCount } = testSuite
 		const running = []
 		let suiteResults = new Map()
 		let threadID = 0
         this.suiteReporter.suiteStarted(testSuite)
-		while (threadID < threadCount) {
+		while (threadID < testSuite.threadCount) {
 			const { threadTests } = testSuite
 			const threadDone = this.executeThread(threadID++, threadTests)
 			threadDone.then(threadResults => suiteResults = new Map([...suiteResults, ...threadResults]))

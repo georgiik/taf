@@ -1,4 +1,4 @@
-const Loader = require('../../../src/di/loader')
+const fs = require('fs')
 const TestExecution = require('./test.execution')
 
 const isTestMethod = obj => k => k.startsWith('test') && (typeof obj[k] == 'function')
@@ -10,11 +10,30 @@ const testMethods = obj => objMethods(obj).filter(isTestMethod(obj))
 /** Class implementing Test repository
  * @memberOf Scope
  * */
-class TestRepository extends Loader {
+class TestRepository{
 	constructor() {
-		super()
+        this.classIndex = []
 		this.tests = []
 	}
+    loadFile(file) {
+        const cls = require(file)
+        if (!Reflect.has(cls, 'name')) {
+            throw new Error(`Error loading file, ensure that file contains class: ${file}`)
+        }
+        this.classIndex.push(cls)
+    }
+    loadDir(dir, recursive = true) {
+        fs.readdirSync(dir).forEach(file => {
+            const path = dir + '/' + file
+            if (fs.statSync(path).isDirectory()) {
+                if (recursive) {
+                    this.loadDir(path)
+                }
+            } else {
+                this.loadFile(path)
+            }
+        })
+    }
 	loadTests(testsPath) {
 		this.loadDir(testsPath)
 		this.classIndex.forEach(TestClass => {

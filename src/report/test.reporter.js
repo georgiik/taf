@@ -16,14 +16,6 @@ class TestReporter {
 		this.reporters.forEach(reporter => reporter.addLabel && reporter.addLabel(name, value))
 	}
 
-	feature(feature) {
-		this.addLabel('feature', feature)
-	}
-
-	story(story) {
-		this.addLabel('story', story)
-	}
-
 	testStarted(test) {
 		this.reporters.forEach(reporter => reporter.testStarted(test))
 	}
