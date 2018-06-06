@@ -61,6 +61,9 @@ if (options.config) {
 	} else {
 		console.log(`No Suite specified in config: ${options.config}\nRunning all tests from: ${config.tests}`)
 	}
+	if (config.context) {
+		config.context = require(path.resolve(config.context))
+	}
 }
 
 if (options.tests) {

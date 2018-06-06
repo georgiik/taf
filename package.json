@@ -1,7 +1,7 @@
 {
   "name": "taf",
   "version": "1.0.0",
-  "description": "",
+  "description": "Test Runner for JavaScript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,8 +10,8 @@
     "taf": "index.js"
   },
   "keywords": [],
-  "author": "gku",
-  "license": "ISC",
+  "author": "Georgii Kurtanidze",
+  "license": "MIT",
   "dependencies": {
     "allure2-js-commons": "^1.0.6",
     "command-line-args": "^5.0.2",
