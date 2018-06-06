@@ -1,9 +1,0 @@
-{
-  "name": "simple",
-  "version": "0.0.1",
-  "dependencies": {
-    "taf": "file:../../",
-    "awb": "^0.4.31",
-    "chai": "^4.1.2"
-  }
-}
