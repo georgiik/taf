@@ -141,3 +141,7 @@ module.exports = {
 ```
 #### 4.2 Run tests
 `taf --config config.js`
+
+### 5.Examples
+See code for this Getting Started:
+https://github.com/georgiik/taf_examples
