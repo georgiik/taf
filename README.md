@@ -1,5 +1,5 @@
 # TAF
-TAF is a test runner for JavaScript. This repository contains examples of its usage.
+TAF is a test runner for JavaScript.
 ## Getting started
 ### Install TAF
 `npm install -g taf`
