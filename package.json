@@ -1,6 +1,6 @@
 {
   "name": "taf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Test Runner for JavaScript",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,10 @@
   "bin": {
     "taf": "index.js"
   },
-  "keywords": ["testrunner", "taf"],
+  "keywords": [
+    "testrunner",
+    "taf"
+  ],
   "author": "Georgii Kurtanidze",
   "license": "MIT",
   "repository": "https://github.com/georgiik/taf",
